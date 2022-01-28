@@ -30,7 +30,7 @@ def main(args):
     """
 
     if args.files == []:
-        results=do_search('stdin',stdin,args.searchstr[0])
+        results=sbom_grep('stdin',stdin,args.searchstr[0])
         if results:
             print(results)
     else:
