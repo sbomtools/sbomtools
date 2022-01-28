@@ -1,0 +1,20 @@
+name: RunChecks
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install argparse,pylint
+    - name: Analysing the code with pylint
+      run: |
+        pylint -dR0913,R0914,R0912,R0801 sbomtools/*.py
+    - name: Attempting install
+      run: |
+        pip install .
+      	   
