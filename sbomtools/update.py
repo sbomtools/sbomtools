@@ -8,6 +8,7 @@ Routines to call update an SBOM
 """
 
 import json
+import sbomtools.exceptions
 from sbomtools.cyclonedx import cyclonedx_update
 from sbomtools.spdx import spdx_update
 

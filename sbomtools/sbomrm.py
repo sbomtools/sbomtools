@@ -35,4 +35,3 @@ def cli():
             print(f'{args.filename}: ' + str(os_e))
         except json.decoder.JSONDecodeError as j_error:
             print(f'{args.filename}: JSON error: ' + str(j_error))
-            return False
