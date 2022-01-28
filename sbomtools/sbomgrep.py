@@ -8,7 +8,7 @@ Provide CLI functionality for sbomgrep
 
 import argparse
 import json
-from sys import stderr,stdin
+from sys import stdin
 from sbomtools.grep import sbom_grep
 
 def print_json_results(args):
@@ -30,10 +30,10 @@ def print_json_results(args):
                 if output:
                     results.extend(output)
         except OSError as file_except:
-            stderr.write(f'{filename}: ' + str(file_except) + '\n')
+            print(f'{filename}: ' + str(file_except) + '\n')
             return
         except json.decoder.JSONDecodeError as j_error:
-            stderr.write(f'{filename}: JSON error: ' + str(j_error) + '\n')
+            print(f'{filename}: JSON error: ' + str(j_error) + '\n')
             return
 
     print(json.dumps(results))
@@ -58,7 +58,7 @@ def pretty_print_results(args):
                 if output:
                     results= results+output
         except OSError as file_except:
-            stderr.write(f'{filename}: ' + str(file_except) + '\n')
+            print(f'{filename}: ' + str(file_except) + '\n')
             return
     print(results,end='')
     return
