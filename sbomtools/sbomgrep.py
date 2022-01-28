@@ -1,14 +1,14 @@
 #!python
 # Copyright (c) 2022, Cisco Systems, Inc. and/or its affiliates.
 # All rights reserved.
-# See accompanying LICENSE file in apt2sbom distribution.
+# See accompanying LICENSE file in sbomtools distribution.
 """
 Provide CLI functionality for sbomgrep
 """
 
 import argparse
 from sys import stderr,stdin
-from sbomtools.search import do_search
+from sbomtools.grep import sbom_grep
 
 def cli():
     """
