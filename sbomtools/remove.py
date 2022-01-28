@@ -7,7 +7,7 @@ Route to remove to appropriate handler, either SPDX or CycloneDX.
 """
 
 import json
-from sys import stderr
+import sbomtools.exceptions
 from sbomtools.cyclonedx import cyclonedx_remove
 from sbomtools.spdx import spdx_remove
 
@@ -17,34 +17,22 @@ def sbom_rm(filename,component_name,recurse):
     and then dispatch.
     """
 
-    try:
-        with open(filename,'r',encoding='utf-8') as sbom_fp:
-            sbom=json.load(sbom_fp)
-    except OSError as os_e:
-        stderr.write(f'{filename}: ' + str(os_e))
-        return False
-    except json.decoder.JSONDecodeError as j_error:
-        stderr.write(f'{filename}: JSON error: ' + str(j_error))
-        return False
+    with open(filename,'r',encoding='utf-8') as sbom_fp:
+        sbom=json.load(sbom_fp)
 
     if 'bomFormat' in sbom and sbom['bomFormat'] == 'CycloneDX':
         sbom= cyclonedx_remove(sbom,component_name,recurse)
     elif 'spdxVersion' in sbom:
         sbom= spdx_remove(sbom,component_name,recurse)
     else:
-        stderr.write(f'{filename}: unrecognized format.\n')
-        return False
+        raise sbomtools.exceptions.FileFormatError("Unrecognized Format")
 
     if not sbom:
-        stderr.write('Errors encountered in request.')
-        return False
+        raise sbomtools.exceptions.UnknownError("Something went wrong")
 
 #    Write out the file
 
-    try:
-        with open(filename,'w',encoding='utf-8') as sbom_fp:
-            sbom_fp.write(json.dumps(sbom))
-    except OSError as sbom_err:
-        return False
+    with open(filename,'w',encoding='utf-8') as sbom_fp:
+        sbom_fp.write(json.dumps(sbom))
 
     return True

@@ -15,22 +15,23 @@ def spdx_search(searchstr,sbom, want_json = False):
     JSON file.
     """
 
+    if not 'packages' in sbom:
+        return False
     rets=[]
     prog=re.compile('.*' + searchstr)
-    if 'packages' in sbom:
-        for entry in sbom['packages']:
-            if prog.match(entry['name']):
-                if want_json:
-                    rets.append(entry)
-                else:
-                    rets.append({'name': entry['name'], 'version': entry['versionInfo']})
-            if 'checksums' in entry:
-                for hash_entry in entry['checksums']:
-                    if prog.match(hash_entry['checksumValue']):
-                        if want_json:
-                            rets.append(entry)
-                        else:
-                            rets.append({'name': entry['name'], 'version': entry['versionInfo']})
+    for entry in sbom['packages']:
+        if prog.match(entry['name']):
+            if want_json:
+                rets.append(entry)
+            else:
+                rets.append({'name': entry['name'], 'version': entry['versionInfo']})
+        if 'checksums' in entry:
+            for hash_entry in entry['checksums']:
+                if prog.match(hash_entry['checksumValue']):
+                    if want_json:
+                        rets.append(entry)
+                    else:
+                        rets.append({'name': entry['name'], 'version': entry['versionInfo']})
     if rets == []:
         return False
     return rets

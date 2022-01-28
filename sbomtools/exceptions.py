@@ -21,3 +21,8 @@ class FileFormatError(Exception):
     """
     Raised when there is a problem with the SBOM format.
     """
+
+class UnknownError(Exception):
+    """
+    Something went wrong but we don't know what.
+    """

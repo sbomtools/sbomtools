@@ -32,6 +32,10 @@ def print_json_results(args):
         except OSError as file_except:
             stderr.write(f'{filename}: ' + str(file_except) + '\n')
             return
+        except json.decoder.JSONDecodeError as j_error:
+            stderr.write(f'{filename}: JSON error: ' + str(j_error) + '\n')
+            return
+
     print(json.dumps(results))
     return
 

@@ -6,7 +6,9 @@
 Provide CLI functionality to do an SBOM add/update.
 """
 
+import json
 import argparse
+import sbomtools.exceptions
 from sbomtools.update import sbom_update
 
 
@@ -33,8 +35,21 @@ def cli():
                         nargs='+')
 
     args=parser.parse_args()
-    return sbom_update(args.filename,args.name,args.version,
-                       supplier=args.supplier,email=args.email,
-                       url=args.url, sha256=args.sha256, sha1=args.sha1,
-                       md5=args.md5,website=args.website,
-                       overwrite=args.overwrite, deps=args.dependencies)
+    try:
+        return sbom_update(args.filename,args.name,args.version,
+                           supplier=args.supplier,email=args.email,
+                           url=args.url, sha256=args.sha256, sha1=args.sha1,
+                           md5=args.md5,website=args.website,
+                           overwrite=args.overwrite, deps=args.dependencies)
+    except OSError as sbom_error:
+        print(f'{args.filename}: ' + str(sbom_error))
+        return False
+    except json.decoder.JSONDecodeError as sbom_error:
+        print(f'{args.filename}: JSON error: ' + str(sbom_error))
+        return False
+    except sbomtools.exceptions.FileFormatError as sbom_error:
+        print(f'{args.filename}: File format error: ' + str(sbom_error))
+        return False
+    except sbomtools.exceptions.UnknownError as sbom_error:
+        print(f'{args.filename}: Unknown error: ' + str(sbom_error))
+        return False
