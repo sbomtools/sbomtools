@@ -17,4 +17,3 @@ jobs:
     - name: Attempting install
       run: |
         pip install .
-      	   
