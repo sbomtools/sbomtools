@@ -7,7 +7,7 @@ Provide CLI functionality to do an SBOM add/update.
 """
 
 import argparse
-from sbomtools.update import update_sbom
+from sbomtools.update import sbom_update
 
 
 def cli():
@@ -33,7 +33,7 @@ def cli():
                         nargs='+')
 
     args=parser.parse_args()
-    return update_sbom(args.filename,args.name,args.version,
+    return sbom_update(args.filename,args.name,args.version,
                        supplier=args.supplier,email=args.email,
                        url=args.url, sha256=args.sha256, sha1=args.sha1,
                        md5=args.md5,website=args.website,

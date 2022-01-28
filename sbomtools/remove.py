@@ -11,7 +11,7 @@ from sys import stderr
 from sbomtools.cyclonedx import cyclonedx_remove
 from sbomtools.spdx import spdx_remove
 
-def remove_sbom(filename,component_name,recurse):
+def sbom_rm(filename,component_name,recurse):
     """
     Dispatch routine.  Open file, figure out if it's SPDX or CycloneDX,
     and then dispatch.

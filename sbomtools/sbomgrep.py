@@ -7,8 +7,57 @@ Provide CLI functionality for sbomgrep
 """
 
 import argparse
+import json
 from sys import stderr,stdin
 from sbomtools.grep import sbom_grep
+
+def print_json_results(args):
+    """
+    print JSON results of a search.
+    """
+
+    if args.files == []:
+        results=sbom_grep('stdin',stdin,args.searchstr[0])
+        if results:
+            print(json.dumps(results))
+        return
+
+    results=[]
+    for filename in args.files:
+        try:
+            with open(filename,'r',encoding='utf8') as s_fp:
+                output=sbom_grep(filename,s_fp,args.searchstr[0],args.json)
+                if output:
+                    results.extend(output)
+        except OSError as file_except:
+            stderr.write(f'{filename}: ' + str(file_except) + '\n')
+            return
+    print(json.dumps(results))
+    return
+
+def pretty_print_results(args):
+    """
+    Main program to process sbomgrep
+    """
+
+    if args.files == []:
+        results=sbom_grep('stdin',stdin,args.searchstr[0])
+        if results:
+            print(results)
+        return
+
+    results=''
+    for filename in args.files:
+        try:
+            with open(filename,'r',encoding='utf8') as s_fp:
+                output=sbom_grep(filename,s_fp,args.searchstr[0],args.json)
+                if output:
+                    results= results+output
+        except OSError as file_except:
+            stderr.write(f'{filename}: ' + str(file_except) + '\n')
+            return
+    print(results,end='')
+    return
 
 def cli():
     """
@@ -21,29 +70,7 @@ def cli():
     parser.add_argument('files',nargs='*')
 
     args=parser.parse_args()
-    return main(args)
-
-
-def main(args):
-    """
-    Main program to process sbomgrep
-    """
-
-    if args.files == []:
-        results=sbom_grep('stdin',stdin,args.searchstr[0])
-        if results:
-            print(results)
+    if args.json:
+        print_json_results(args)
     else:
-        results=''
-        for filename in args.files:
-            try:
-                with open(filename,'r',encoding='utf8') as s_fp:
-                    output=sbom_grep(filename,s_fp,args.searchstr[0],args.json)
-                    if output:
-                        results=results+output
-            except OSError as file_except:
-                stderr.write(f'{filename}: ' + str(file_except) + '\n')
-                return
-        if results:
-            print(results)
-        return
+        pretty_print_results(args)

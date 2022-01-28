@@ -16,7 +16,7 @@ def spdx_search(searchstr,sbom, want_json = False):
     """
 
     rets=[]
-    prog=re.compile(searchstr)
+    prog=re.compile('.*' + searchstr)
     if 'packages' in sbom:
         for entry in sbom['packages']:
             if prog.match(entry['name']):

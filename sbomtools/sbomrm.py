@@ -7,7 +7,7 @@ Provide CLI functionality to remove an entry from an SBOM.
 """
 
 import argparse
-from sbomtools.remove import remove_sbom
+from sbomtools.remove import sbom_rm
 import sbomtools.exceptions
 
 def cli():
@@ -23,7 +23,7 @@ def cli():
     args=parser.parse_args()
     for pkgname in args.name:
         try:
-            remove_sbom(args.filename,pkgname,args.recurse)
+            sbom_rm(args.filename,pkgname,args.recurse)
         except sbomtools.exceptions.PackageNotFound as sbom_error:
             print(f'{pkgname} not found in {args.filename}')
         except sbomtools.exceptions.DependencyNotMet as sbom_error:

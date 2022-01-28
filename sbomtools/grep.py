@@ -11,7 +11,7 @@ from sys import stderr
 from sbomtools.cyclonedx import cyclonedx_search
 from sbomtools.spdx import spdx_search
 
-def sbom_grep(filename,search_fp,searchstr, want_json = False):
+def sbom_grep(filename,search_fp,searchstr, want_json = True):
     """
     takes as input a filename, file pointer, search string, and
     whether to produce JSON output.  Filename is only used for
@@ -31,13 +31,9 @@ def sbom_grep(filename,search_fp,searchstr, want_json = False):
         return False
 
     output=''
-    outjson=[]
 
+    if want_json:
+        return res
     for entry in res:
-        if want_json:
-            outjson.append(entry)
-        else:
-            output=output + f'{filename}: {entry["name"]} version {entry["version"]}'
-    if want_json and outjson:
-        output = json.dumps(outjson)
+        output=output + f'{filename}: {entry["name"]} version {entry["version"]}\n'
     return output

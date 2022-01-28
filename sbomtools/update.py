@@ -17,7 +17,7 @@ from sys import stderr
 from sbomtools.cyclonedx import cyclonedx_update
 from sbomtools.spdx import spdx_update
 
-def update_sbom(filename,component_name,version,
+def sbom_update(filename,component_name,version,
                 supplier,email, url, sha256, sha1,
 		md5,website,overwrite,deps):
     """

@@ -15,7 +15,7 @@ def cyclonedx_search(searchstr,sbom, want_json = False):
     an array of component names and versions.
     """
     rets=[]
-    prog=re.compile(searchstr)
+    prog=re.compile('.*' + searchstr)
     if not 'components' in sbom:
         return False # nothing to search
     for entry in sbom['components']:
