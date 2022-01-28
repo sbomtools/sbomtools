@@ -25,7 +25,7 @@ def cli():
     for pkgname in args.name:
         try:
             sbom_rm(args.filename,pkgname,args.recurse)
-        except sbomtools.exceptions.PackageNotFound as sbom_error:
+        except sbomtools.exceptions.PackageNotFound:
             print(f'{pkgname} not found in {args.filename}')
         except sbomtools.exceptions.FileFormatError as sbom_error:
             print(str(sbom_error))

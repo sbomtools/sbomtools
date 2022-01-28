@@ -31,7 +31,7 @@ def cyclonedx_search(searchstr,sbom, want_json = False):
                         rets.append(entry)
                     else:
                         rets.append({'name' : entry['name'], 'version' : entry['version']})
-    if rets == []:
+    if not rets:
         return False
     return rets
 
@@ -76,7 +76,7 @@ def cyclonedx_update(sbom,component_name,version,
         hashes.append({
             'alg' : 'SHA-256',
             'content' : sha256 })
-    if hashes != []:
+    if hashes:
         newentry['hashes']=hashes
     if website:
         newentry['externalReferences'] = [ {
@@ -161,7 +161,7 @@ def cyclonedx_remove(sbom,component_name,recurse=False,have_recursed=False):
     # if we aren't meant to recursively remove and there are dependencies,
     # we must return an error.
 
-    if packlist != []:
+    if packlist:
         if not recurse:
             raise sbomtools.exceptions.DependencyNotMet(
                 f'{component_name} dependency problem: {packlist}')

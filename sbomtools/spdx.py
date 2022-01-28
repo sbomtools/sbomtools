@@ -32,7 +32,7 @@ def spdx_search(searchstr,sbom, want_json = False):
                         rets.append(entry)
                     else:
                         rets.append({'name': entry['name'], 'version': entry['versionInfo']})
-    if rets == []:
+    if not rets:
         return False
     return rets
 
@@ -73,7 +73,7 @@ def spdx_update(sbom,component_name,version,
         hashes.append({
             'algorithm' : 'SHA256',
             'checksumvalue' : sha256 })
-    if hashes != []:
+    if hashes:
         newentry['checksums']=hashes
     if website:
         newentry['homepage'] = website
@@ -181,7 +181,7 @@ def spdx_remove(sbom,component_name,recurse,have_recursed=False):
                 if component_name == rel['spdxElementId']:
                     sbom['relationships'].remove(rel)
 
-    if packlist != []:
+    if packlist:
         if not recurse:
             raise sbomtools.exceptions.DependencyNotMet(
                 f'{component_name} dependency problem: {packlist}')
