@@ -38,7 +38,7 @@ def main(args):
         for filename in args.files:
             try:
                 with open(filename,'r',encoding='utf8') as s_fp:
-                    output=do_search(filename,s_fp,args.searchstr[0],args.json)
+                    output=sbom_grep(filename,s_fp,args.searchstr[0],args.json)
                     if output:
                         results=results+output
             except OSError as file_except:
