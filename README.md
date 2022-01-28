@@ -27,15 +27,16 @@ Results are similar to grep.  If no file is specified, stdin will be used.
 
 To search from python
 
-    from sbomtools import sbom_search
+    from sbomtools import sbom_grep
 
     from sbom tools import sbom_grep
-    results= sbom_grep(filename, searchstr,sbom, want_json = True)
+    results= sbom_grep(filename, searchstr,file_pointer, want_json = True)
 
 Where
  - filename is nothing more than a strong for search results.  This is done simply
    to emulate grep behavior fro pretty printing.
  - searchstr is a regex, sbom is a JSON format of an SBOM, and
+ - file_pointer is the successful result of open() or sys.stdin
  - want_json is whether you want the entire entry for each result.  Otherwise
    a simple JSON array of dicts of the form
    {'name' : pkgname, 'version' : version} will be returned.
