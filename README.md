@@ -3,7 +3,7 @@
 **WARNING**
 
 This package is early in development.  May cause warts or indigestion.
-Save your work.
+Save your work.  Interfaces subject to change without notice.
 
 This package contains a handful of routines to search and update SBOMs.  JSON
 versions of both CycloneDX and SPDX are supported.
