@@ -7,7 +7,7 @@ Routines to search SBOMs.
 """
 
 import json
-from sbomtools.constants import SEEN_CDX,SEEN_SPDX
+from sbomtools.constants import FORMAT_CDX,FORMAT_SPDX
 from sbomtools.cyclonedx import cyclonedx_search
 from sbomtools.spdx import spdx_search
 
@@ -20,9 +20,9 @@ def sbom_grep(filename,search_fp,searchstr, want_json = True):
     sbom=json.loads(search_fp.read())
 
     if 'bomFormat' in sbom and sbom['bomFormat'] == 'CycloneDX':
-        (state,res)= (SEEN_CDX,cyclonedx_search(searchstr,sbom,want_json))
+        (state,res)= (FORMAT_CDX,cyclonedx_search(searchstr,sbom,want_json))
     if 'spdxVersion' in sbom:
-        (state,res)= (SEEN_SPDX,spdx_search(searchstr,sbom,want_json))
+        (state,res)= (FORMAT_SPDX,spdx_search(searchstr,sbom,want_json))
     if not res:
         return False
 

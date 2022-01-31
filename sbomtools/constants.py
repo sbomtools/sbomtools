@@ -2,6 +2,6 @@
 We need two constants to stop an inconsistency in grep.
 """
 
-SEEN_NONE=0
-SEEN_CDX=1
-SEEN_SPDX=2
+FORMAT_NONE=0
+FORMAT_CDX=1
+FORMAT_SPDX=2

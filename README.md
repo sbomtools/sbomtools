@@ -37,11 +37,13 @@ Where
    to emulate grep behavior fro pretty printing.
  - searchstr is a regex, sbom is a JSON format of an SBOM, and
  - file_pointer is the successful result of open() or sys.stdin
- - want_json is whether you want the entire entry for each result.  Otherwise
-   a simple JSON array of dicts of the form
-   {'name' : pkgname, 'version' : version} will be returned.
+ - want_json is whether you want the entire entry for each result.
+
 
 The function will automatically detect the input format.
+
+results is either a printable string of results or (sbom_type,jsonstring)
+where SBOM type is either sbomtools.FORMAT_CDX or sbomtools.FORMAT_SPDX.
 
 
 ### sbomupdate
@@ -99,3 +101,12 @@ Where
  - component_name is the name of the component to remove
  - recurse says to remove those packages that are dependent on this component
 
+The following exceptions are defined:
+
+ - PackageNotFound: you tried to edit/remove a package that wasn't present.
+ - DependencyNotMet: you tried to remove something that had a dependency
+   		     and you didn't use -r.
+ - AlreadyExists: you tried to add an entry that already exists, and you
+                  didn't use -O
+ - FileFormatError: there is something wrong with the JSON or the SBOM.
+ - UnknownError: Something weird happened.  Open an Issue ;-(
