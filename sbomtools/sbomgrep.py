@@ -9,6 +9,7 @@ Provide CLI functionality for sbomgrep
 import argparse
 import json
 from sys import stdin
+from sbomtools.constants import *
 from sbomtools.grep import sbom_grep
 
 def print_json_results(args):
@@ -17,16 +18,21 @@ def print_json_results(args):
     """
 
     if args.files == []:
-        results=sbom_grep('stdin',stdin,args.searchstr[0])
+        (state,results)=sbom_grep('stdin',stdin,args.searchstr[0])
         if results:
             print(json.dumps(results))
         return
 
     results=[]
+    sbom_type=SEEN_NONE
     for filename in args.files:
         try:
             with open(filename,'r',encoding='utf8') as s_fp:
-                output=sbom_grep(filename,s_fp,args.searchstr[0],args.json)
+                (state,output)=sbom_grep(filename,s_fp,args.searchstr[0],args.json)
+                if sbom_type != state and sbom_type != SEEN_NONE:
+                    print(f'{filename}: mixed SBOM types in JSON')
+                    return
+                sbom_type=state
                 if output:
                     results.extend(output)
         except OSError as file_except:
