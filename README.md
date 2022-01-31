@@ -85,8 +85,8 @@ This routine removes one or more SBOM entries.  Once again, it is format
 neutral.  Note, it tries to disentangle SPDX dependencies, and will do
 so only for DEPENDENCY_OF and DEPENDS_ON.  The other relationships are TBD.
 
-    usage: sbomrm [-h] -f FILENAME -n NAME [NAME ...]
-		  [-r | --recurse | --no-recurse]
+    usage: sbomrm [-h] -f FILENAME [-r | --recurse | --no-recurse]
+                   NAME [NAME ...]
 
 This one works with cross-dependencies, if you use -r.  Heh.
 

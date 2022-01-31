@@ -17,10 +17,10 @@ def cli():
     """
     parser= argparse.ArgumentParser(description="Update SBOM with new package info")
     parser.add_argument('-f','--filename',help='file to edit',required=True)
-    parser.add_argument('-n','--name', required=True,help='Component Name',nargs='+')
     parser.add_argument('-r','--recurse',
                         help='Remove anything that depends on this entry as well',
                         action='store_true')
+    parser.add_argument('name',help='Component Name',nargs='+')
     args=parser.parse_args()
     for pkgname in args.name:
         try:
