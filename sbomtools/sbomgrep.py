@@ -9,7 +9,7 @@ Provide CLI functionality for sbomgrep
 import argparse
 import json
 from sys import stdin
-from sbomtools.constants import *
+from sbomtools.constants import SEEN_NONE
 from sbomtools.grep import sbom_grep
 
 def print_json_results(args):
@@ -29,7 +29,7 @@ def print_json_results(args):
         try:
             with open(filename,'r',encoding='utf8') as s_fp:
                 (state,output)=sbom_grep(filename,s_fp,args.searchstr[0],args.json)
-                if sbom_type != state and sbom_type != SEEN_NONE:
+                if sbom_type not in ( state, SEEN_NONE ):
                     print(f'{filename}: mixed SBOM types in JSON')
                     return
                 sbom_type=state
