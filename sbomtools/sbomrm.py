@@ -20,7 +20,7 @@ def cli():
     parser.add_argument('-n','--name', required=True,help='Component Name',nargs='+')
     parser.add_argument('-r','--recurse',
                         help='Remove anything that depends on this entry as well',
-                        action=argparse.BooleanOptionalAction)
+                        action='store_true')
     args=parser.parse_args()
     for pkgname in args.name:
         try:
@@ -31,6 +31,8 @@ def cli():
             print(str(sbom_error))
         except sbomtools.exceptions.UnknownError as sbom_error:
             print(str(sbom_error))
+        except sbomtools.exceptions.DependencyNotMet as sbom_error:
+            print(f'{pkgname}: dependency error: ' + str(sbom_error))
         except OSError as os_e:
             print(f'{args.filename}: ' + str(os_e))
         except json.decoder.JSONDecodeError as j_error:

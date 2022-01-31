@@ -74,7 +74,7 @@ def cli():
     Function to call CLI routines to invoke apt2sbom.
     """
     parser= argparse.ArgumentParser(description="search SBOM for packages")
-    parser.add_argument('-j','--json', action=argparse.BooleanOptionalAction,
+    parser.add_argument('-j','--json', action='store_true',
                         help="Output JSON results")
     parser.add_argument('searchstr',nargs=1)
     parser.add_argument('files',nargs='*')

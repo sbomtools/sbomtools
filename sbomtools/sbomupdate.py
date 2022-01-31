@@ -28,7 +28,7 @@ def cli():
     parser.add_argument('--md5',help='MD5 hash')
     parser.add_argument('-w','--website',help='Project Homepage')
     parser.add_argument('-O','--overwrite',
-                        action=argparse.BooleanOptionalAction,
+                        action='store_true',
                         help="Overwrite existing component")
     parser.add_argument('-d','--dependencies',
                         help='Names of components that this depends on',
