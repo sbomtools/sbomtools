@@ -24,13 +24,14 @@ def cyclonedx_search(searchstr,sbom, want_json = False):
                 rets.append(entry)
             else:
                 rets.append({'name' : entry['name'], 'version' : entry['version']})
-        if 'hashes' in entry:
+        elif 'hashes' in entry:
             for hash_entry in entry['hashes']:
                 if prog.match(hash_entry['content']):
                     if want_json:
                         rets.append(entry)
                     else:
                         rets.append({'name' : entry['name'], 'version' : entry['version']})
+                    break
     return rets
 
 def cyclonedx_update(sbom,component_name,version,
