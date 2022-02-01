@@ -72,7 +72,7 @@ def pretty_print_results(args):
 
 def cli():
     """
-    Function to call CLI routines to invoke apt2sbom.
+    Function to call CLI routines to invoke sbomgrep.
     """
     parser= argparse.ArgumentParser(description="search SBOM for packages")
     parser.add_argument('-j','--json', action='store_true',

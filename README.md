@@ -19,6 +19,23 @@ versions of both CycloneDX and SPDX are supported.
 
 ## Usage
 
+### sbomls
+
+    usage: sbomls [-h] [-j] [-1] -f FILENAME [components ...]
+
+Where-
+ - -j produces JSON entries that match.  The JSON will be of the
+   appropriate form for a component for CycloneDX or a package
+   for SPDX.
+ - -1 produces a single entry per line.  Otherwise, a tabbed list
+   is produced a'la ls(1).
+ - -f is the filename of the SBOM to use.  Format is automatically
+   detected.
+ - one or more components may optionally be named.  Wildcards are
+   permitted.
+   
+Returns a list of matching components (or all).
+
 ### sbomgrep
 
     % sbomgrep [-j] search-string [file [file...]]
