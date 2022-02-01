@@ -28,7 +28,7 @@ def print_json_results(args):
     for filename in args.files:
         try:
             with open(filename,'r',encoding='utf8') as s_fp:
-                (state,output)=sbom_grep(filename,s_fp,args.searchstr[0],args.json)
+                (state,output)=sbom_grep(s_fp,args.searchstr[0],args.json)
                 if sbom_type not in ( state, FORMAT_NONE ):
                     print(f'{filename}: mixed SBOM types in JSON')
                     return
@@ -51,18 +51,19 @@ def pretty_print_results(args):
     """
 
     if args.files == []:
-        results=sbom_grep('stdin',stdin,args.searchstr[0])
+        results=sbom_grep(stdin,args.searchstr[0])[1]
         if results:
-            print(results)
+            print(f'stdin: {results["name"]} version {results["version"]}\n')
         return
 
     results=''
     for filename in args.files:
         try:
             with open(filename,'r',encoding='utf8') as s_fp:
-                output=sbom_grep(filename,s_fp,args.searchstr[0],args.json)
-                if output:
-                    results= results+output
+                output=sbom_grep(s_fp,args.searchstr[0],args.json)[1]
+                for entry in output:
+                    results=results + f'{filename}: {entry["name"]}' + \
+                        f'version {entry["version"]}\n'
         except OSError as file_except:
             print(f'{filename}: ' + str(file_except) + '\n')
             return

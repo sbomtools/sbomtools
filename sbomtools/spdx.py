@@ -32,8 +32,6 @@ def spdx_search(searchstr,sbom, want_json = False):
                         rets.append(entry)
                     else:
                         rets.append({'name': entry['name'], 'version': entry['versionInfo']})
-    if not rets:
-        return False
     return rets
 
 def spdx_update(sbom,component_name,version,

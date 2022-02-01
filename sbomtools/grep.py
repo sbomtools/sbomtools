@@ -11,11 +11,10 @@ from sbomtools.constants import FORMAT_CDX,FORMAT_SPDX
 from sbomtools.cyclonedx import cyclonedx_search
 from sbomtools.spdx import spdx_search
 
-def sbom_grep(filename,search_fp,searchstr, want_json = True):
+def sbom_grep(search_fp,searchstr, want_json = True):
     """
     takes as input a filename, file pointer, search string, and
-    whether to produce JSON output.  Filename is only used for
-    display purposes.  Returns either pretty string or JSON.
+    whether to produce JSON output.
     """
     sbom=json.loads(search_fp.read())
 
@@ -24,12 +23,6 @@ def sbom_grep(filename,search_fp,searchstr, want_json = True):
     if 'spdxVersion' in sbom:
         (state,res)= (FORMAT_SPDX,spdx_search(searchstr,sbom,want_json))
     if not res:
-        return False
+        return (False, [])
 
-    if want_json:
-        return (state,res)
-
-    output=''
-    for entry in res:
-        output=output + f'{filename}: {entry["name"]} version {entry["version"]}\n'
-    return output
+    return (state,res)
