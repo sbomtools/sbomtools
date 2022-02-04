@@ -62,7 +62,7 @@ def pretty_print_results(args):
             with open(filename,'r',encoding='utf8') as s_fp:
                 output=sbom_grep(s_fp,args.searchstr[0],args.json)[1]
                 for entry in output:
-                    results=results + f'{filename}: {entry["name"]}' + \
+                    results=results + f'{filename}: {entry["name"]} ' + \
                         f'version {entry["version"]}\n'
         except OSError as file_except:
             print(f'{filename}: ' + str(file_except) + '\n')

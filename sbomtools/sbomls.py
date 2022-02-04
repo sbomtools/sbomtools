@@ -9,19 +9,19 @@ that match a pattern for a single file.
 
 import argparse
 import json
+import re
 from shutil import get_terminal_size
 from sbomtools.grep import sbom_grep
 
-def print_json_results(args):
+def call_grep(args):
     """
-    print JSON results of a search.
+    call grep with appropriate fp and args
     """
-
     results=[]
     if args.components:
         components=args.components
     else:
-        components=['']
+        components=['.*']
     try:
         for component in components:
             with open(args.filename,'r',encoding='utf8') as s_fp:
@@ -30,35 +30,33 @@ def print_json_results(args):
                     results.extend(output)
     except OSError as file_except:
         print(f'{args.filename}: ' + str(file_except) + '\n')
-        return
+        return False
     except json.decoder.JSONDecodeError as j_error:
         print(f'{args.filename}: JSON error: ' + str(j_error) + '\n')
-        return
+        return False
+    except re.error as re_error:
+        print(f'{args.filename}: regex error: ' + str(re_error))
 
-    print(json.dumps(results))
-    return
+    return results
+
+def print_json_results(args):
+    """
+    print JSON results of a search.
+    """
+
+    results=call_grep(args)
+    if results:
+        print(json.dumps(results))
 
 def pretty_print_results(args):
     """
     Main program to process sbomgrep
     """
 
-    results=[]
-    if args.components:
-        components=args.components
-    else:
-        components=['']
-    try:
-        for component in components:
-            with open(args.filename,'r',encoding='utf8') as s_fp:
-                output=sbom_grep(s_fp,component,args.json,want_wild=False)[1]
-                results.extend(output)
-    except OSError as file_except:
-        print(f'{args.filename}: ' + str(file_except) + '\n')
-        return
-
+    results=call_grep(args)
     if not results:
         return
+
     names=[d['name'] for d in results]
     names.sort()
     term_width=get_terminal_size()[0]

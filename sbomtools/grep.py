@@ -22,7 +22,6 @@ def sbom_grep(search_fp,searchstr, want_json = True,want_wild=True):
         searchstr= '.*' + searchstr
     else:
         searchstr= searchstr + '$'
-
     if 'bomFormat' in sbom and sbom['bomFormat'] == 'CycloneDX':
         (state,res)= (FORMAT_CDX,cyclonedx_search(searchstr,sbom,want_json))
     if 'spdxVersion' in sbom:
