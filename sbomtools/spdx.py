@@ -11,8 +11,8 @@ import sbomtools.exceptions
 
 def spdx_search_pkgs_and_files(searchstr,which_array, field_entry, want_json):
     """
-    Return array of names and versions for matching entries in SPDX
-    JSON file.
+    Return names of either files or packages, and optionally version information, or
+    the whole entry based on the want_json flag.
     """
 
     rets=[]
@@ -37,6 +37,10 @@ def spdx_search_pkgs_and_files(searchstr,which_array, field_entry, want_json):
     return rets
 
 def spdx_search(searchstr,sbom, want_json = False):
+    """
+    Return list of packages if they exist and a list of files if they exist.
+    """
+
     rets = []
     if 'packages' in sbom:
         rets.extend(spdx_search_pkgs_and_files(searchstr,sbom['packages'],'name',want_json))
@@ -155,7 +159,7 @@ def spdx_remove(sbom,component_name,recurse,have_recursed=False):
     found=False
 
     if not 'packages' in sbom:
-        raise sbomtools.exceptions.FileFormatError('components not found in CycloneDX file')
+        raise sbomtools.exceptions.FileFormatError('components not found in SPDX file')
 
     for package in sbom['packages']:
         if component_name in (package['name'], package['SPDXID']):
