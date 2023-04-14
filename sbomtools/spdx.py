@@ -27,7 +27,7 @@ def spdx_search(searchstr,sbom, want_json = False):
                 rets.append({'name': entry['name'], 'version': entry['versionInfo']})
             else:
                 rets.append({'name': entry['name'], 'version': False })
-        if 'checksums' in entry:
+        elif 'checksums' in entry:
             for hash_entry in entry['checksums']:
                 if prog.match(hash_entry['checksumValue']):
                     if want_json:
