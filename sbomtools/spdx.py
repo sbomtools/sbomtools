@@ -23,15 +23,19 @@ def spdx_search(searchstr,sbom, want_json = False):
         if prog.match(entry['name']):
             if want_json:
                 rets.append(entry)
-            else:
+            elif 'versionInfo' in entry:
                 rets.append({'name': entry['name'], 'version': entry['versionInfo']})
+            else:
+                rets.append({'name': entry['name'], 'version': False })
         if 'checksums' in entry:
             for hash_entry in entry['checksums']:
                 if prog.match(hash_entry['checksumValue']):
                     if want_json:
                         rets.append(entry)
-                    else:
+                    elif 'versionInfo' in entry:
                         rets.append({'name': entry['name'], 'version': entry['versionInfo']})
+                    else:
+                        rets.append({'name': entry['name'], 'version': False })
     return rets
 
 def spdx_update(sbom,component_name,version,
