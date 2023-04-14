@@ -53,7 +53,10 @@ def pretty_print_results(args):
     if args.files == []:
         results=sbom_grep(stdin,args.searchstr[0])[1]
         if results:
-            print(f'stdin: {results["name"]} version {results["version"]}\n')
+            if results["version"]:
+                print(f'stdin: {results["name"]} version {results["version"]}\n')
+            else:
+                print(f'stdin: {results["name"]}\n')
         return
 
     results=''
@@ -62,8 +65,10 @@ def pretty_print_results(args):
             with open(filename,'r',encoding='utf8') as s_fp:
                 output=sbom_grep(s_fp,args.searchstr[0],args.json)[1]
                 for entry in output:
-                    results=results + f'{filename}: {entry["name"]} ' + \
-                        f'version {entry["version"]}\n'
+                    results=results + f'{filename}: {entry["name"]}'
+                    if entry["version"]:
+                        results=results + f' version {entry["version"]}'
+                    results=results+'\n'
         except OSError as file_except:
             print(f'{filename}: ' + str(file_except) + '\n')
             return
