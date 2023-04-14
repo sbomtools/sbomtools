@@ -9,33 +9,39 @@ SPDX support routines
 import re
 import sbomtools.exceptions
 
-def spdx_search(searchstr,sbom, want_json = False):
+def spdx_search_pkgs_and_files(searchstr,which_array, field_entry, want_json):
     """
     Return array of names and versions for matching entries in SPDX
     JSON file.
     """
 
-    if not 'packages' in sbom:
-        return False
     rets=[]
     prog=re.compile(searchstr)
-    for entry in sbom['packages']:
-        if prog.match(entry['name']):
+    for entry in which_array:
+        if prog.match(entry[field_entry]):
             if want_json:
                 rets.append(entry)
             elif 'versionInfo' in entry:
-                rets.append({'name': entry['name'], 'version': entry['versionInfo']})
+                rets.append({'name': entry[field_entry], 'version': entry['versionInfo']})
             else:
-                rets.append({'name': entry['name'], 'version': False })
-        if 'checksums' in entry:
+                rets.append({'name': entry[field_entry], 'version': False })
+        elif 'checksums' in entry:
             for hash_entry in entry['checksums']:
                 if prog.match(hash_entry['checksumValue']):
                     if want_json:
                         rets.append(entry)
                     elif 'versionInfo' in entry:
-                        rets.append({'name': entry['name'], 'version': entry['versionInfo']})
+                        rets.append({'name': entry[field_entry], 'version': entry['versionInfo']})
                     else:
-                        rets.append({'name': entry['name'], 'version': False })
+                        rets.append({'name': entry[field_entry], 'version': False })
+    return rets
+
+def spdx_search(searchstr,sbom, want_json = False):
+    rets = []
+    if 'packages' in sbom:
+        rets.extend(spdx_search_pkgs_and_files(searchstr,sbom['packages'],'name',want_json))
+    if 'files' in sbom:
+        rets.extend(spdx_search_pkgs_and_files(searchstr,sbom['files'],'fileName',want_json))
     return rets
 
 def spdx_update(sbom,component_name,version,
